@@ -17,4 +17,4 @@ curl --silent \
     "https://caddyserver.com/api/download?os=linux&arch=amd64" > "${caddy_executable}"
 chmod +x "${caddy_executable}"
 
-rm -rf /tmp
+rm -rf /tmp/*

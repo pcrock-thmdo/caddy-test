@@ -12,6 +12,7 @@ build:
 run: build
 	docker run --rm --interactive --tty \
 		--publish "127.0.0.1:2019:2019" \
+		--publish "127.0.0.1:2015:2015" \
 		localhost/caddy-test
 .PHONY: run
 
