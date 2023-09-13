@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
-body="Hi!"
 response_code="200 OK"
+body="Hi!"
+delay_seconds=30
 bash_version="$(
     bash --version \
     | grep --perl-regexp --only-matching \
         "(?<=GNU bash, version )\\S+(?=.*)"
 )"
-line_delay_seconds=5
 
 full_payload=(
     "HTTP/1.1 ${response_code}"
@@ -19,12 +19,15 @@ full_payload=(
     "${body}"
 )
 
+sleep "${delay_seconds}"
+
 for line in "${full_payload[@]}";
 do
+    # can optionally put a sleep here to test what happens when the server is actively sending a
+    # response, and it just takes a long time to send the whole thing.
     if [ "${line}" == "${body}" ]; then
         echo -n "${line}"
     else
         echo "${line}"
     fi
-    sleep "${line_delay_seconds}"
 done
