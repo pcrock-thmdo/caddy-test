@@ -21,6 +21,11 @@ bash:
 		localhost/caddy-test /usr/bin/bash
 .PHONY: bash
 
+kill-caddy:
+	docker exec "$$(docker container ls --latest --quiet)" \
+		/usr/bin/bash -c 'kill -SIGTERM $$(pgrep caddy)'
+.PHONY: kill-caddy
+
 lint:
 	shellcheck *.sh
 	hadolint Dockerfile

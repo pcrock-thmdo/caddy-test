@@ -9,7 +9,8 @@ apt-get update
 apt-get satisfy --yes --no-install-recommends \
     "curl (<< 8)" \
     "ca-certificates (>= 20230311)" \
-    "netcat-openbsd (<< 2)"
+    "netcat-openbsd (<< 2)" \
+    "procps"
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 
