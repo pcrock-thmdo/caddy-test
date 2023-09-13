@@ -5,9 +5,10 @@ WORKDIR /app
 COPY setup.sh /tmp/
 RUN /tmp/setup.sh
 
-COPY Caddyfile ./
+COPY Caddyfile server.sh entrypoint.sh ./
 
 # never use this in production:
 ENV CADDY_ADMIN="0.0.0.0:2019"
 
-CMD [ "/usr/local/bin/caddy", "run" ]
+ENTRYPOINT [ "/app/entrypoint.sh" ]
+CMD [ "/app/server.sh" ]

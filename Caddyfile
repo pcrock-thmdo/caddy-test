@@ -1,3 +1,5 @@
 http://localhost:2015 {
-    respond "Hello, Caddy!"
+    reverse_proxy localhost:8080 {
+        header_down -Server
+    }
 }

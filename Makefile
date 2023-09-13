@@ -25,3 +25,7 @@ lint:
 	shellcheck *.sh
 	hadolint Dockerfile
 .PHONY: lint
+
+request:
+	http "http://localhost:2015"
+.PHONY: request

@@ -23,5 +23,5 @@ Press Ctrl + C to exit.
 
 while true;
 do
-    echo "${full_payload}" | nc -l -s 127.0.0.1 -p "${listen_port}" -N
+    echo -n "${full_payload}" | nc -l -s 127.0.0.1 -p "${listen_port}" -N
 done

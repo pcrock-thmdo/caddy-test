@@ -6,7 +6,10 @@ caddy_executable="/usr/local/bin/caddy"
 export DEBIAN_FRONTEND=noninteractive
 
 apt-get update
-apt-get satisfy --yes --no-install-recommends "curl (<< 8)" "ca-certificates (>= 20230311)" && \
+apt-get satisfy --yes --no-install-recommends \
+    "curl (<< 8)" \
+    "ca-certificates (>= 20230311)" \
+    "netcat-openbsd (<< 2)"
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 
