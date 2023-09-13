@@ -44,3 +44,7 @@ format: build
 		localhost/caddy-test \
 		-c "/usr/local/bin/caddy fmt" > ./Caddyfile
 .PHONY: format
+
+fastly-ips:
+	http "https://api.fastly.com/public-ip-list"
+.PHONY: fastly-ips

@@ -1,3 +1,15 @@
+{
+	servers {
+		# todo: move the following to a separate file using [import](https://caddyserver.com/docs/caddyfile/directives/import)
+		# https://caddyserver.com/docs/caddyfile/options#trusted-proxies
+		# https://caddyserver.com/docs/json/apps/http/servers/trusted_proxies/static/
+		trusted_proxies static private_ranges # todo: append list of fastly IP ranges
+
+		timeouts {
+			# todo: https://caddyserver.com/docs/caddyfile/options#timeouts
+		}
+	}
+}
 http://localhost:2015 {
 	log {
 		output stdout
