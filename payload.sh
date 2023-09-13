@@ -3,7 +3,6 @@ set -Eeuo pipefail
 
 response_code="200 OK"
 body="Hi!"
-delay_seconds=30
 bash_version="$(
     bash --version \
     | grep --perl-regexp --only-matching \
@@ -19,7 +18,7 @@ full_payload=(
     "${body}"
 )
 
-sleep "${delay_seconds}"
+sleep "${RESPONSE_DELAY_SECONDS:-0}"
 
 for line in "${full_payload[@]}";
 do

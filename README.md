@@ -13,13 +13,16 @@ Here's what I've tested so far:
 
 ```bash
 # in your first terminal:
-make run # start the server with caddy as a reverse proxy
+# start the server with caddy as a reverse proxy
+RESPONSE_DELAY_SECONDS=30 make run
 
 # in another terminal:
-make request # this request will take a while to complete
+# this request will take a while to complete
+make request
 
 # in a third terminal:
-make kill-caddy # this sends SIGTERM to caddy
+# this sends SIGTERM to caddy
+make kill-caddy
 ```
 
 observed behavior: the slow request is allowed to finish before caddy (and the container) terminates

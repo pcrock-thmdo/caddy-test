@@ -1,3 +1,5 @@
+RESPONSE_DELAY_SECONDS?=0
+
 all: lint pull build run
 .PHONY: all
 
@@ -13,6 +15,7 @@ run: build
 	docker run --rm --interactive --tty \
 		--publish "127.0.0.1:2019:2019" \
 		--publish "127.0.0.1:2015:2015" \
+		--env "RESPONSE_DELAY_SECONDS=$(RESPONSE_DELAY_SECONDS)" \
 		localhost/caddy-test
 .PHONY: run
 
@@ -34,3 +37,10 @@ lint:
 request:
 	http "http://localhost:2015"
 .PHONY: request
+
+format: build
+	docker run --rm \
+		--entrypoint /usr/bin/bash \
+		localhost/caddy-test \
+		-c "/usr/local/bin/caddy fmt" > ./Caddyfile
+.PHONY: format
