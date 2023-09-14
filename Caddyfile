@@ -1,15 +1,14 @@
 {
 	servers {
-		# todo: move the following to a separate file using [import](https://caddyserver.com/docs/caddyfile/directives/import)
-		# https://caddyserver.com/docs/caddyfile/options#trusted-proxies
-		# https://caddyserver.com/docs/json/apps/http/servers/trusted_proxies/static/
-		trusted_proxies static private_ranges # todo: append list of fastly IP ranges
-
+		# the heroku router is on the local LAN and we trust it to tell us the originating client
+		# IP address, etc.
+		trusted_proxies static private_ranges
 		timeouts {
 			# todo: https://caddyserver.com/docs/caddyfile/options#timeouts
 		}
 	}
 }
+
 http://localhost:2015 {
 	log {
 		output stdout
@@ -18,4 +17,5 @@ http://localhost:2015 {
 	reverse_proxy localhost:8080 {
 		header_down -Server
 	}
+	import ip-filter.Caddyfile
 }

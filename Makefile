@@ -1,4 +1,5 @@
 RESPONSE_DELAY_SECONDS?=0
+ALLOWED_IPS?=all
 
 all: lint pull build run
 .PHONY: all
@@ -7,7 +8,7 @@ pull:
 	docker pull docker.io/library/debian:bookworm-slim
 .PHONY: pull
 
-build:
+build: allowlist
 	docker build --tag localhost/caddy-test .
 .PHONY: build
 
@@ -45,6 +46,6 @@ format: build
 		-c "/usr/local/bin/caddy fmt" > ./Caddyfile
 .PHONY: format
 
-fastly-ips:
-	http "https://api.fastly.com/public-ip-list"
-.PHONY: fastly-ips
+allowlist:
+	./generate-allowlist.nu "$(ALLOWED_IPS)"
+.PHONY: allowlist
