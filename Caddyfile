@@ -1,11 +1,17 @@
 {
+	grace_period 30s  # allow 30 seconds for requests to finish before shutting down the server
+
 	servers {
 		# the heroku router is on the local LAN and we trust it to tell us the originating client
 		# IP address, etc.
 		trusted_proxies static private_ranges
 		timeouts {
-			# todo: https://caddyserver.com/docs/caddyfile/options#timeouts
+			# https://caddyserver.com/docs/caddyfile/options#timeouts
+			# must read the HTTP request body in 5 seconds or less
+			read_body 5s
+			read_header 3s
 		}
+		max_header_size 8k # Fastly restriction
 	}
 }
 
@@ -17,5 +23,23 @@ http://localhost:2015 {
 	reverse_proxy localhost:8080 {
 		header_down -Server
 	}
+
+	request_body {
+		max_size 67108864  # 64 MiB -- if you change this, don't forget to change @too_large below
+	}
+	# the `request_body.max_size` setting will still allow HTTP request content through the reverse
+	# proxy to the application server; it just cuts the request off at the 64 MiB limit. so here we
+	# configure Caddy to abort the request the moment it sees a Content-Length that's too large:
+	@too_large {
+		expression `
+			size({http.request.header.Content-Length}) > 0
+			&& int({http.request.header.Content-Length}) > 67108864
+		`
+	}
+	respond @too_large 413 {
+		body "Payload Too Large"
+		close
+	}
+
 	import ip-filter.Caddyfile
 }

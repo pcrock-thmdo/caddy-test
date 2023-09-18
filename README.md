@@ -7,7 +7,7 @@ Assumes you have Docker and HTTPie installed.
 
 ### todo
 
-* [ ] whitelist CDN IP address ranges (esp Fastly)
+* [x] allowlist CDN IP address ranges (esp Fastly)
     * don't just "trust" fastly IPs; forbid all non-fastly IPs
 * [ ] configure via environment variable (esp `PORT`)
 * [ ] timeout settings
@@ -52,6 +52,21 @@ make request
 
 **observed behavior:** requests for `all` and `private` succeed (because my host's IP address is in
 a private LAN subnet) but `fastly` fails (because my host is not a Fastly IP address)
+
+#### request filtering
+
+prevent requests that are too large from getting to the application
+
+```bash
+# in your first terminal:
+make run
+
+# in another terminal:
+dd if=/dev/zero bs=65MiB count=1 | make request
+```
+
+**observed behavior:** rejected with 413 Payload Too Large; request isn't seen by the upstream
+application
 
 ### Links
 
