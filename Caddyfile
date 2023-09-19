@@ -42,4 +42,7 @@ http://localhost:2015 {
 	}
 
 	import ip-filter.Caddyfile
+	handle @blocked_ips {
+		abort
+	}
 }

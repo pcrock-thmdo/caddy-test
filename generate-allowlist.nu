@@ -18,24 +18,21 @@ def allow_fastly [] {
     $"@blocked_ips {
 \tnot client_ip (get_fastly_subnets)
 }
-
-handle @blocked_ips {
-\tabort
-}
 "
 }
 
 def allow_all [] {
-    "\n"
+    $"@blocked_ips {
+\t# https://caddyserver.com/docs/caddyfile/matchers#expression
+\t# return false so NO request is considered a blocked request
+\texpression `false`
+}
+"
 }
 
 def allow_private_ranges [] {
     $"@blocked_ips {
 \tnot client_ip private_ranges
-}
-
-handle @blocked_ips {
-\tabort
 }
 "
 }
